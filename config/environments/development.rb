@@ -36,6 +36,9 @@ Rails.application.configure do
 
   config.action_mailer.perform_caching = false
 
+  # rails generate devise:install の指示
+  config.action_mailer.default_url_options = { host: '192-168-56-101.nip.io', port: 3000 }
+
   # Print deprecation notices to the Rails logger.
   config.active_support.deprecation = :log
 
