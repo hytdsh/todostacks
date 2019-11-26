@@ -65,4 +65,7 @@ Rails.application.configure do
 
   # nip.io を含めた全てを許可
   config.hosts.clear
+
+  # web console の "Cannot render console from" に対処
+  config.web_console.whitelisted_ips = '0.0.0.0/0'
 end
