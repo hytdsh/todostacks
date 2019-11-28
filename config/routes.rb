@@ -7,4 +7,6 @@ Rails.application.routes.draw do
   end
 
   root 'pages#main'
+
+  get 'taskstest', :to => 'application#taskstest'
 end
