@@ -21,8 +21,6 @@ class ApplicationController < ActionController::Base
     service.authorization = secrets.to_authorization
 
     response = service.list_tasklists max_results: 10
-    response.items.each do |task_list|
-      puts "#{task_list.title} (#{task_list.id})"
-    end
+    render json: response
   end
 end
