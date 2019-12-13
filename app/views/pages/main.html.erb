@@ -1,3 +1,9 @@
 <h1>Pages#main</h1>
 <p>Find me in app/views/pages/main.html.erb</p>
+<% if user_signed_in? %>
+  <p>Signed In!</p>
+  <%= current_user.uid %>
+<% else %>
+  <p>NOT Signed In</p>
+<% end %>
 <% console if Rails.env.development? %>
