@@ -1,4 +1,9 @@
 Rails.application.routes.draw do
+  root 'pages#main'
+  get '/help', to: 'pages#help'
+  get '/about', to: 'pages#about'
+  get '/contact', to: 'pages#contact'
+
   devise_for :users, :controllers => { :omniauth_callbacks => "users/omniauth_callbacks" }
 
   devise_scope :user do
@@ -6,7 +11,7 @@ Rails.application.routes.draw do
     delete 'sign_out', :to => 'devise/sessions#destroy', :as => :destroy_user_session
   end
 
-  root 'pages#main'
+
 
   get 'taskstest', :to => 'application#taskstest'
 end
