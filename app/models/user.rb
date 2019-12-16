@@ -5,8 +5,6 @@ class User < ApplicationRecord
   #       :recoverable, :rememberable, :validatable
   devise :omniauthable, :omniauth_providers => [:google_oauth2]
 
-  #attr_accessor :oauth_client, :oauth_access_token
-
   def self.from_omniauth(auth)
     # Either create a User record or update it based on the provider (Google) and the UID
     where(provider: auth.provider, uid: auth.uid).first_or_create do |user|
