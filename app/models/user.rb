@@ -28,8 +28,8 @@ class User < ApplicationRecord
       expires_at: expires_at
     )
     new_oauth_access_token = oauth_access_token.refresh! if oauth_access_token.expired?
-    self.token = new_oauth_access_token.token
-    self.expires_at = oauth_access_token.expires_at
-    self.save
+    update_attribute(:token, new_oauth_access_token.token)
+    update_attribute(:expires_at, oauth_access_token.expires_at)
+#    self.save
   end
 end
