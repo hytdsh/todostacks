@@ -17,13 +17,13 @@ class User < ApplicationRecord
 
   def refresh_access_token_if_expired!
     if expires_at < Time.now.to_i
-      oauth_include_google_urls = OmniAuth::Strategies::GoogleOauth2.new(
+      oauth_with_google_urls = OmniAuth::Strategies::GoogleOauth2.new(
         nil,
         Rails.application.credentials.google[:client_id],
         Rails.application.credentials.google[:client_secret]
       )
       oauth_access_token = OAuth2::AccessToken.new(
-        oauth_include_google_urls.client,
+        oauth_with_google_urls.client,
         token,
         refresh_token: refresh_token,
         expires_at: expires_at
