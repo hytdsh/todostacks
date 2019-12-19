@@ -1,5 +1,5 @@
 require 'google/apis/tasks_v1'
-require 'google/api_client/client_secrets.rb'
+require 'googleauth'
 
 class PagesController < ApplicationController
   before_action :authenticate_user!, only: [:main]
@@ -9,24 +9,22 @@ class PagesController < ApplicationController
 
   def main
     if user_signed_in?
-      secrets = Google::APIClient::ClientSecrets.new(
+      oauth_client = Google::Auth::UserRefreshCredentials.new(
+#      oauth = Google::Auth::Credentials.new( # does not work with error "no implicit conversion of nil into String"
         {
-          "web" =>
-            {
-              "access_token" => current_user.token,
-              "refresh_token" => current_user.refresh_token,
-              "expires_at" => current_user.expires_at,
-              "client_id" => Rails.application.credentials.google[:client_id],
-              "client_secret" => Rails.application.credentials.google[:client_secret]
-            }
+          "access_token" => current_user.token,
+          "refresh_token" => current_user.refresh_token,
+          "expires_at" => current_user.expires_at,
+          "client_id" => Rails.application.credentials.google[:client_id],
+          "client_secret" => Rails.application.credentials.google[:client_secret]
         }
       )
 
       service = Tasks::TasksService.new
-      service.authorization = secrets.to_authorization
+      service.authorization = oauth_client
+#      service.authorization = oauth.client # for Google::Auth::Credentials (if it works)
 
       @response = service.list_tasklists # max_results: 10 というような指定もできる
-      #render json: @response
     end
   end
 

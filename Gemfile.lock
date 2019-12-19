@@ -276,6 +276,7 @@ DEPENDENCIES
   capybara (>= 2.15)
   devise (= 4.7.1)
   google-api-client (= 0.34.1)
+  googleauth (= 0.10.0)
   jbuilder (~> 2.7)
   listen (>= 3.0.5, < 3.2)
   omniauth-google-oauth2 (= 0.8.0)
