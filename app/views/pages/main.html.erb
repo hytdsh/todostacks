@@ -4,7 +4,7 @@
   <p>Signed In!</p>
   <%= current_user.uid %>
   <% @response.items.each do |tasklist| %>
-    <%= tasklist %>
+    <%= tasklist.title %>
   <% end %>
 <% else %>
   <p>NOT Signed In</p>
