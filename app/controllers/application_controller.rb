@@ -2,7 +2,11 @@ class ApplicationController < ActionController::Base
 
   private
     def refresh_access_token_if_expired!
-      current_user.refresh_access_token_if_expired!
+      begin
+        current_user.refresh_access_token_if_expired!
+      rescue
+        redirect_to destroy_user_session_path
+      end
     end
 
     def connect_google_tasks
