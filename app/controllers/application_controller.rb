@@ -1,4 +1,9 @@
+require 'google/apis/tasks_v1'
+require 'googleauth'
+
 class ApplicationController < ActionController::Base
+
+  Tasks = Google::Apis::TasksV1
 
   private
     def refresh_access_token_if_expired!
@@ -20,7 +25,7 @@ class ApplicationController < ActionController::Base
             "client_secret" => Rails.application.credentials.google[:client_secret]
           }
         )
-        @service = Google::Apis::TasksV1::TasksService.new
+        @service = Tasks::TasksService.new
         @service.authorization = oauth_client
       end
     end
