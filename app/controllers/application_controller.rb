@@ -25,6 +25,11 @@ class ApplicationController < ActionController::Base
             "client_secret" => Rails.application.credentials.google[:client_secret]
           }
         )
+        begin
+          oauth_client.refresh!
+        rescue
+          redirect_to destroy_user_session_path
+        end
         @service = Tasks::TasksService.new
         @service.authorization = oauth_client
       end
