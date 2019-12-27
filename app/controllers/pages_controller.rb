@@ -1,6 +1,6 @@
 class PagesController < ApplicationController
   before_action :authenticate_user!, only: [:main]
-  before_action :refresh_access_token_if_expired!, only: [:main]
+  before_action :check_access_token, only: [:main]
   before_action :connect_google_tasks, only: [:main]
 
   def main

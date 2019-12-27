@@ -6,7 +6,7 @@ class ApplicationController < ActionController::Base
   Tasks = Google::Apis::TasksV1
 
   private
-    def refresh_access_token_if_expired!
+    def check_access_token
       begin
         current_user.refresh_access_token_if_expired! # raise error with revoke on google side when `exipres_at` has expired.
       rescue
@@ -16,7 +16,7 @@ class ApplicationController < ActionController::Base
 
     def connect_google_tasks
       if user_signed_in?
-        oauth_client = Google::Auth::UserRefreshCredentials.new(
+        signet_oauth_client = Google::Auth::UserRefreshCredentials.new(
           {
             "access_token" => current_user.token,
             "refresh_token" => current_user.refresh_token,
@@ -26,12 +26,12 @@ class ApplicationController < ActionController::Base
           }
         )
         begin
-          oauth_client.fetch_access_token # raise error with revoke on google side when `expires_at` has not expired.
+          signet_oauth_client.fetch_access_token # raise error with revoke on google side when `expires_at` has not expired.
         rescue
           redirect_to destroy_user_session_path
         end
         @service = Tasks::TasksService.new
-        @service.authorization = oauth_client
+        @service.authorization = signet_oauth_client
       end
     end
 end
