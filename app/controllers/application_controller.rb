@@ -8,7 +8,7 @@ class ApplicationController < ActionController::Base
   private
     def refresh_access_token_if_expired!
       begin
-        current_user.refresh_access_token_if_expired!
+        current_user.refresh_access_token_if_expired! # raise error with revoke on google side when `exipres_at` has expired.
       rescue
         redirect_to destroy_user_session_path
       end
@@ -26,7 +26,7 @@ class ApplicationController < ActionController::Base
           }
         )
         begin
-          oauth_client.refresh!
+          oauth_client.fetch_access_token # raise error with revoke on google side when `expires_at` has not expired.
         rescue
           redirect_to destroy_user_session_path
         end
