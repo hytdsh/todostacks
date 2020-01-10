@@ -9,7 +9,7 @@ class ApplicationController < ActionController::Base
     def check_access_token
       begin
         current_user.refresh_access_token_if_expired! # raise error with revoke on google side when `exipres_at` has expired.
-      rescue
+      rescue OAuth2::Error => e
         redirect_to destroy_user_session_path
       end
     end
@@ -27,7 +27,7 @@ class ApplicationController < ActionController::Base
         )
         begin
           signet_oauth_client.fetch_access_token # raise error with revoke on google side when `expires_at` has not expired.
-        rescue
+        rescue Signet::AuthorizationError => e
           redirect_to destroy_user_session_path
         end
         @service = Tasks::TasksService.new
