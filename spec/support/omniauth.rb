@@ -18,7 +18,7 @@ def set_omniauth
     "credentials" => {
       "token" => "TOKEN",
       "refresh_token" => "REFRESH_TOKEN",
-      "expires_at" => 1496120719,
+      "expires_at" => 2.hours.from_now.to_i,
       "expires" => true
     },
     "extra" => {
