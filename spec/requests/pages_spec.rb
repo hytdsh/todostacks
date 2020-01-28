@@ -10,8 +10,9 @@ RSpec.describe "Pages", type: :request do
   context "OmniAuth" do
     before do
       set_omniauth
-      Rails.application.env_config["devise.mapping"] = Devise.mappings[:user]
-      Rails.application.env_config["omniauth.auth"] = OmniAuth.config.mock_auth[:google_oauth2]
+      # it works without Rails.application.env_config[].
+#      Rails.application.env_config["devise.mapping"] = Devise.mappings[:user]
+#      Rails.application.env_config["omniauth.auth"] = OmniAuth.config.mock_auth[:google_oauth2]
     end
     subject do
       post user_google_oauth2_omniauth_authorize_url
