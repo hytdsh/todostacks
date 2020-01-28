@@ -20,6 +20,8 @@ RSpec.describe "Pages", type: :request do
     end
     it "GoogleのOAuth認証を通過すると User の count が 1 増えて、'/' へのアクセスが 200 になる" do
       expect{ subject }.to change(User, :count).by(1)
+      #get root_path
+      #expect(response).to have_http_status(200)
     end
   end
 
