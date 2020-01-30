@@ -24,16 +24,16 @@ RSpec.describe "Pages", type: :request do
       # コールバック Users::OmniauthCallbacksController の中で User が新規登録され count が1増える
       expect{ subject }.to change(User, :count).by(1)
 
-      # 次のステップで使う ApplicationController#connect_google_tasks をモックしているつもり
-      allow(controller).to receive(:connect_google_tasks).and_return(true)
+      # 次のステップで使う ApplicationController#connect_google_tasks をモックしている
+      allow_any_instance_of(ApplicationController).to receive(:connect_google_tasks).and_return(true)
 
       # コールバックで「ユーザー登録 change(User, :count).by(1)」した次のステップとして '/' へのリダイレクトが
       # 発生しているので follow_redirect! が必要
       follow_redirect!
-      # follow_redirect! で '/' に遷移しようとして before_action で指定している　ApplicationController#connect_google_tasks
-      # を適切に構成できずにエラーが raise し、その結果として redirect_to destroy_user_session_path (つまり /sign_out) となる
+      # follow_redirect! で '/' に遷移する際に before_action で指定している　ApplicationController#connect_google_tasks
+      # についてはモックが機能して通過できるが、インスタンス変数を適切に構成できず（渡せず） PagesController#main の中でエラーとなる
 
-      # 前述した通り、現時点では response が 302 (/sign_out へのリダイレクト)となり fail する
+      # PagesController#main の中でエラーが発生するため、現時点では fail する
       expect(response).to have_http_status(200)
     end
   end
