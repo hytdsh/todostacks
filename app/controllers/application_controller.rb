@@ -33,11 +33,11 @@ class ApplicationController < ActionController::Base
 #        @service = Tasks::TasksService.new
 #        @service.authorization = signet_oauth_client
       end
+    end
 
-      def connect_google_tasks
-        service = Tasks::TasksService.new
-        service.authorization = @signet_oauth_client
-        return service
-      end
+    def connect_google_tasks
+      service = Tasks::TasksService.new
+      service.authorization = @signet_oauth_client
+      return service
     end
 end
