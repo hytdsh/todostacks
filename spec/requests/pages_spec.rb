@@ -14,8 +14,8 @@ RSpec.describe "Pages", type: :request do
 #      Rails.application.env_config["devise.mapping"] = Devise.mappings[:user]
 #      Rails.application.env_config["omniauth.auth"] = OmniAuth.config.mock_auth[:google_oauth2]
 
-      # change(User, :count).by(1) の次のステップで使う ApplicationController#connect_google_tasks をモックしている
-      allow_any_instance_of(ApplicationController).to receive(:connect_google_tasks).and_return(true)
+      # change(User, :count).by(1) の次のステップで使う ApplicationController#check_signet をモックしている
+      allow_any_instance_of(ApplicationController).to receive(:check_signet).and_return(true)
     end
     subject do
       # 「Google側」に post を送信する
