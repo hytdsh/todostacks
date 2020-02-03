@@ -13,6 +13,9 @@ RSpec.describe "Pages", type: :request do
       # it seems to work without Rails.application.env_config[].
 #      Rails.application.env_config["devise.mapping"] = Devise.mappings[:user]
 #      Rails.application.env_config["omniauth.auth"] = OmniAuth.config.mock_auth[:google_oauth2]
+
+      # change(User, :count).by(1) の次のステップで使う ApplicationController#connect_google_tasks をモックしている
+      allow_any_instance_of(ApplicationController).to receive(:connect_google_tasks).and_return(true)
     end
     subject do
       # 「Google側」に post を送信する
@@ -23,9 +26,6 @@ RSpec.describe "Pages", type: :request do
     it "GoogleのOAuth認証を通過すると User の count が 1 増えて、'/' へのアクセスが 200 になる" do
       # コールバック Users::OmniauthCallbacksController の中で User が新規登録され count が1増える
       expect{ subject }.to change(User, :count).by(1)
-
-      # 次のステップで使う ApplicationController#connect_google_tasks をモックしている
-      allow_any_instance_of(ApplicationController).to receive(:connect_google_tasks).and_return(true)
 
       # コールバックで「ユーザー登録 change(User, :count).by(1)」した次のステップとして '/' へのリダイレクトが
       # 発生しているので follow_redirect! が必要
