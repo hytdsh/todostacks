@@ -14,9 +14,9 @@ class ApplicationController < ActionController::Base
       end
     end
 
-    def connect_google_tasks
+    def check_signet
       if user_signed_in?
-        signet_oauth_client = Google::Auth::UserRefreshCredentials.new(
+        @signet_oauth_client = Google::Auth::UserRefreshCredentials.new(
           {
             "access_token" => current_user.token,
             "refresh_token" => current_user.refresh_token,
@@ -26,12 +26,18 @@ class ApplicationController < ActionController::Base
           }
         )
         begin
-          signet_oauth_client.fetch_access_token # raise error with revoke on google side when `expires_at` has not expired.
+          @signet_oauth_client.fetch_access_token # raise error with revoke on google side when `expires_at` has not expired.
         rescue Signet::AuthorizationError => e
           redirect_to destroy_user_session_path
         end
-        @service = Tasks::TasksService.new
-        @service.authorization = signet_oauth_client
+#        @service = Tasks::TasksService.new
+#        @service.authorization = signet_oauth_client
+      end
+
+      def connect_google_tasks
+        service = Tasks::TasksService.new
+        service.authorization = @signet_oauth_client
+        return service
       end
     end
 end
