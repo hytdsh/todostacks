@@ -30,7 +30,7 @@ RSpec.describe "Pages", type: :request do
       # コールバックで「ユーザー登録 change(User, :count).by(1)」した次のステップとして '/' へのリダイレクトが
       # 発生しているので follow_redirect! が必要
       follow_redirect!
-      # follow_redirect! で '/' に遷移する際に before_action で指定している　ApplicationController#connect_google_tasks
+      # follow_redirect! で '/' に遷移する際に before_action で指定している　ApplicationController#check_signet
       # についてはモックが機能して通過できるが、インスタンス変数を適切に構成できず（渡せず） PagesController#main の中でエラーとなる
 
       # PagesController#main の中でエラーが発生するため、現時点では fail する
