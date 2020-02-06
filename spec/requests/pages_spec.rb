@@ -14,8 +14,11 @@ RSpec.describe "Pages", type: :request do
 #      Rails.application.env_config["devise.mapping"] = Devise.mappings[:user]
 #      Rails.application.env_config["omniauth.auth"] = OmniAuth.config.mock_auth[:google_oauth2]
 
-      # change(User, :count).by(1) の次のステップで使う ApplicationController#check_signet をモックしている
+      # change(User, :count).by(1) を検証した次の follow_redirect! で before_action から呼ぶ ApplicationController#check_signet をモックしている
       allow_any_instance_of(ApplicationController).to receive(:check_signet).and_return(true)
+
+      # change(User, :count).by(1) を検証した次の follow_redirect! で PagesController から呼ぶ ApplicationController のメソッドのチェーンをモックしている
+      allow_any_instance_of(ApplicationController).to receive_message_chain('connect_google_tasks.list_tasklists.items.each').and_return(nil)
     end
     subject do
       # 「Google側」に post を送信する
@@ -30,10 +33,7 @@ RSpec.describe "Pages", type: :request do
       # コールバックで「ユーザー登録 change(User, :count).by(1)」した次のステップとして '/' へのリダイレクトが
       # 発生しているので follow_redirect! が必要
       follow_redirect!
-      # follow_redirect! で '/' に遷移する際に before_action で指定している　ApplicationController#check_signet
-      # についてはモックが機能して通過できるが、インスタンス変数を適切に構成できず（渡せず） PagesController#main の中でエラーとなる
 
-      # PagesController#main の中でエラーが発生するため、現時点では fail する
       expect(response).to have_http_status(200)
     end
   end
